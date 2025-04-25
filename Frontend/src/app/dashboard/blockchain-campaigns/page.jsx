@@ -122,6 +122,8 @@ export default function BlockchainCampaignsPage() {
             <p>💰 Raised: {c.currentAmount} ETH</p>
             <p>⏰ Starts: {c.startTime}</p>
             <p>⏱ Ends: {c.endTime}</p>
+
+
             <p>👤 Creator: {c.creator}</p>
           </div>
 
