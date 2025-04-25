@@ -1,0 +1,11 @@
+Django
+django-cors-headers
+django-ninja
+django-ninja-jwt[crypto]
+pydantic[email]
+rav
+djangorestframework 
+channels 
+stripe 
+psycopg2-binary
+daphne

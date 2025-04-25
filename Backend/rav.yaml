@@ -1,0 +1,18 @@
+scripts:
+  server:
+    - cd src && python3 manage.py runserver 8001
+  makemigrations:
+    - cd src && python3 manage.py makemigrations
+  migrate:
+    - cd src && python3 manage.py migrate
+  shell:
+    - cd src && python3 manage.py shell
+  curl_auth: |
+    curl.exe -X POST -H "Content-Type: application/json" -d "{\"username\": \"sauls\", \"password\": \"test123\"}" http://127.0.0.1:8001/api/token/pair
+  curl_protect: |
+    curl.exe -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyNjAzMzU3LCJpYXQiOjE3NDI2MDMwNTcsImp0aSI6IjhjZWU3YWI4ZDdhZDRjYTQ5YTQ2ZmM2NzE2N2UwNmE3IiwidXNlcl9pZCI6MX0.MPBpOHrcqrYbgeieV19ErjYkwT0_FqjSYgfKBHTRewo"  http://127.0.0.1:8001/api/me
+  curl_account: |
+    curl.exe -X POST -H "Content-Type: application/json" -d "{\"username\": \"test2222\",\"email\": \"saul2222@gmail.com\", \"password\": \"test123\", \"first_name\": \"saul\", \"last_name\": \"serrano\", \"phone_number\": \"5555555555\"}" http://127.0.0.1:8001/api/accounts/signup
+
+    
+    
