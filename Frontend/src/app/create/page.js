@@ -6,7 +6,8 @@ import { ethers } from "ethers";
 import contractArtifact from "@/lib/CrowdXCampaign.json";
 
 const contractABI = contractArtifact.abi;
-const contractAddress = "0xbC4035141C91Eea75189deD24c2A13674c3E8B8E";
+const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+
 
 export default function CreateCampaignPage() {
   const router = useRouter();

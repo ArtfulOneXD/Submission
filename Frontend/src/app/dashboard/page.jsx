@@ -20,7 +20,7 @@ const fetcher = async (url) => {
 
 const CAMPAIGN_API_URL = "/api/campaigns";
 const LOCAL_RPC_URL = "http://127.0.0.1:8545";
-const contractAddress = "0xbC4035141C91Eea75189deD24c2A13674c3E8B8E";
+const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 const contractABI = contractArtifact.abi;
 
 export default function DashboardPage() {
@@ -113,7 +113,7 @@ export default function DashboardPage() {
               </motion.div>
             </Link>
 
-            {allCampaigns.map((c) => (
+{allCampaigns.map((c) => (
   <Link key={c.id} href={`/campaigns/${c.id}`}>
     <motion.div
       whileHover={{ y: -4 }}
