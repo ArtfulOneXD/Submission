@@ -126,8 +126,8 @@ export default function DashboardPage() {
                   </p>
                   <div className="mt-4 text-sm space-y-1">
                     <p>👤 By: <span className="font-medium">{c.creator?.username || "—"}</span></p>
-                    <p>🎯 Goal: <span className="font-medium">${c.goal_amount}</span></p>
-                    <p>💰 Total Raised: <span className="font-medium">${c.total_raised}</span></p>
+                    <p>🎯 Goal: <span className="font-medium">{c.goal_amount} ETH</span></p>
+                    <p>💰 Total Raised: <span className="font-medium">{c.total_raised} ETH</span></p>
                     {c.funds_claimed !== undefined && (
                       <p>🏦 Funds Claimed: {c.funds_claimed ? "✅ Yes" : "❌ No"}</p>
                     )}
