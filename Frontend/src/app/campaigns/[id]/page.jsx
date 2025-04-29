@@ -20,20 +20,22 @@ export default function CampaignDetailPage() {
       try {
         const provider = new ethers.providers.JsonRpcProvider(LOCAL_RPC_URL);
         const contract = new ethers.Contract(contractAddress, contractABI, provider);
-        const c = await contract.campaigns(parseInt(id));
 
-        const goal = parseFloat(ethers.utils.formatEther(c.goalAmount));
-        const raised = parseFloat(ethers.utils.formatEther(c.currentAmount));
+        const c = await contract.viewCampaign(parseInt(id));
+
+        const goal = parseFloat(ethers.utils.formatEther(c[2]));
+        const raised = parseFloat(ethers.utils.formatEther(c[3]));
         const progress = Math.min((raised / goal) * 100, 100);
 
         setCampaign({
-          title: c.title,
-          description: c.description,
+          title: c[0],
+          description: c[1],
           goal,
           raised,
-          creator: c.creator,
-          start: new Date(c.startTime * 1000).toLocaleString(),
-          end: new Date(c.endTime * 1000).toLocaleString(),
+          creator: c[6],
+          start: new Date(c[4] * 1000).toLocaleString(),
+          end: new Date(c[5] * 1000).toLocaleString(),
+          fundsClaimed: c[9],
           progress,
         });
       } catch (err) {
@@ -56,7 +58,8 @@ export default function CampaignDetailPage() {
       <div className="text-sm mt-4 space-y-1">
         <p>👤 Creator: {campaign.creator}</p>
         <p>🎯 Goal: {campaign.goal} ETH</p>
-        <p>💰 Raised: {campaign.raised} ETH</p>
+        <p>💰 Total Raised: {campaign.raised} ETH</p>
+        <p>🏦 Funds Claimed: {campaign.fundsClaimed ? "✅ Yes" : "❌ No"}</p>
 
         {/* Animated progress bar */}
         <div className="mt-4 bg-gray-700 rounded-full h-4 w-full overflow-hidden shadow-inner">

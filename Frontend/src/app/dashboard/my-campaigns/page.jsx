@@ -44,7 +44,10 @@ export default function MyCampaignsPage() {
                   {campaign.description}
                 </p>
                 <p className="text-xs mt-2">🎯 Goal: ${campaign.goal_amount}</p>
-                <p className="text-xs">💰 Raised: ${campaign.current_amount}</p>
+                <p className="text-xs">💰 Total Raised: ${campaign.total_raised}</p>
+                <p className="text-xs">
+                  🏦 Funds Claimed: {campaign.funds_claimed ? "✅ Yes" : "❌ No"}
+                </p>
               </div>
             </Link>
           ))}

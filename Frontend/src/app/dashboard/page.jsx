@@ -42,18 +42,19 @@ export default function DashboardPage() {
 
         const calls = [];
         for (let i = 1; i < counter; i++) {
-          calls.push(contract.campaigns(i));
+          calls.push(contract.viewCampaign(i));
         }
 
         const results = await Promise.all(calls);
 
         const formatted = results.map((c, i) => ({
           id: `onchain-${i + 1}`,
-          title: c.title,
-          description: c.description,
-          creator: { username: c.creator.slice(0, 6) + "..." },
-          goal_amount: ethers.utils.formatEther(c.goalAmount),
-          current_amount: ethers.utils.formatEther(c.currentAmount),
+          title: c[0],
+          description: c[1],
+          creator: { username: c[6].slice(0, 6) + "..." },
+          goal_amount: ethers.utils.formatEther(c[2]),
+          total_raised: ethers.utils.formatEther(c[3]),
+          funds_claimed: c[9],
         }));
 
         setChainCampaigns(formatted);
@@ -113,24 +114,27 @@ export default function DashboardPage() {
               </motion.div>
             </Link>
 
-{allCampaigns.map((c) => (
-  <Link key={c.id} href={`/campaigns/${c.id}`}>
-    <motion.div
-      whileHover={{ y: -4 }}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 hover:shadow-lg transition cursor-pointer"
-    >
-      <h3 className="text-lg font-semibold">{c.title}</h3>
-      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-        {c.description}
-      </p>
-      <div className="mt-4 text-sm space-y-1">
-        <p>👤 By: <span className="font-medium">{c.creator?.username || "—"}</span></p>
-        <p>🎯 Goal: <span className="font-medium">${c.goal_amount}</span></p>
-        <p>💰 Raised: <span className="font-medium">${c.current_amount}</span></p>
-      </div>
-    </motion.div>
-  </Link>
-))}
+            {allCampaigns.map((c) => (
+              <Link key={c.id} href={`/campaigns/${c.id}`}>
+                <motion.div
+                  whileHover={{ y: -4 }}
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 hover:shadow-lg transition cursor-pointer"
+                >
+                  <h3 className="text-lg font-semibold">{c.title}</h3>
+                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    {c.description}
+                  </p>
+                  <div className="mt-4 text-sm space-y-1">
+                    <p>👤 By: <span className="font-medium">{c.creator?.username || "—"}</span></p>
+                    <p>🎯 Goal: <span className="font-medium">${c.goal_amount}</span></p>
+                    <p>💰 Total Raised: <span className="font-medium">${c.total_raised}</span></p>
+                    {c.funds_claimed !== undefined && (
+                      <p>🏦 Funds Claimed: {c.funds_claimed ? "✅ Yes" : "❌ No"}</p>
+                    )}
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
           </div>
         )}
       </SidebarInset>
