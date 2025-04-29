@@ -14,6 +14,7 @@ export default function CampaignDetailPage() {
   const id = params?.id?.replace("onchain-", "");
   const [campaign, setCampaign] = useState(null);
   const [error, setError] = useState("");
+  const [donationAmount, setDonationAmount] = useState("");
 
   useEffect(() => {
     const fetchCampaign = async () => {
@@ -47,6 +48,37 @@ export default function CampaignDetailPage() {
     if (id) fetchCampaign();
   }, [id]);
 
+  const handleDonate = async () => {
+    if (!donationAmount || isNaN(donationAmount) || Number(donationAmount) <= 0) {
+      alert("Please enter a valid donation amount");
+      return;
+    }
+
+    try {
+      if (!window.ethereum) {
+        alert("Install MetaMask first");
+        return;
+      }
+
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = web3Provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+      const value = ethers.utils.parseEther(donationAmount);
+      const tx = await contract.donateCampaign(parseInt(id), { value });
+      await tx.wait();
+
+      alert("Donation successful!");
+
+      // Refresh the campaign info
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      alert("Donation failed: " + err.message);
+    }
+  };
+
   if (error) return <div className="p-6 text-red-600">{error}</div>;
   if (!campaign) return <div className="p-6">Loading on-chain campaign…</div>;
 
@@ -74,6 +106,24 @@ export default function CampaignDetailPage() {
 
         <p>⏰ Starts: {campaign.start}</p>
         <p>🏁 Ends: {campaign.end}</p>
+      </div>
+
+      {/* 🧡 Donation input and button */}
+      <div className="mt-6 flex items-center gap-2">
+        <input
+          type="number"
+          step="0.01"
+          placeholder="ETH amount"
+          className="w-32 p-2 border rounded bg-black/20"
+          value={donationAmount}
+          onChange={(e) => setDonationAmount(e.target.value)}
+        />
+        <button
+          onClick={handleDonate}
+          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition"
+        >
+          Donate
+        </button>
       </div>
     </div>
   );
